@@ -1,9 +1,14 @@
 # Include your project-specific ignores in this file
 # Read about how to use .gitignore: https://help.github.com/articles/ignoring-files
-.cache-loader
-dist
-node_modules
+vendor/
+dist/
+bower_components/
+node_modules/
 npm-debug.log
 yarn-error.log
-vendor
-resources/assets/config-local.json
+
+# Local settings and data
+/.data
+/.env
+/wp-cli.local.yml
+/docker-compose.override.yml

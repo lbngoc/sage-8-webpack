@@ -1,7 +1,7 @@
 {
   "name": "sage",
-  "version": "9.0.1",
-  "author": "Roots <team@roots.io>",
+  "version": "8.5.2",
+  "author": "Ben Word <ben@benword.com>",
   "homepage": "https://roots.io/sage/",
   "private": true,
   "repository": {
@@ -17,94 +17,50 @@
       "url": "http://opensource.org/licenses/MIT"
     }
   ],
-  "browserslist": [
-    "last 2 versions",
-    "android 4",
-    "opera 12"
-  ],
-  "stylelint": {
-    "extends": "stylelint-config-standard",
-    "rules": {
-      "no-empty-source": null,
-      "at-rule-no-unknown": [
-        true,
-        {
-          "ignoreAtRules": [
-            "extend",
-            "at-root",
-            "debug",
-            "warn",
-            "error",
-            "if",
-            "else",
-            "for",
-            "each",
-            "while",
-            "mixin",
-            "include",
-            "content",
-            "return",
-            "function"
-          ]
-        }
-      ]
-    }
-  },
   "scripts": {
-    "build": "webpack --progress --config resources/assets/build/webpack.config.js",
-    "build:production": "webpack --progress -p --config resources/assets/build/webpack.config.js",
-    "build:profile": "webpack --progress --profile --json --config resources/assets/build/webpack.config.js",
-    "start": "webpack --hide-modules --watch --config resources/assets/build/webpack.config.js",
-    "rmdist": "rimraf dist",
-    "lint": "npm run -s lint:scripts && npm run -s lint:styles",
-    "lint:scripts": "eslint resources/assets/scripts resources/assets/build",
-    "lint:styles": "stylelint \"resources/assets/styles/**/*.{css,sass,scss,sss,less}\"",
-    "test": "npm run -s lint"
+    "start": "docker-compose up -d",
+    "setup": "npm run start && sleep 3 && docker-compose exec -u www-data wordpress sh -c 'wp core install --title=\"$WPSITE_TITLE\" --url=$WPSITE_URL --admin_user=\"$WPSITE_ADMIN_USER\" --admin_password=\"$WPSITE_ADMIN_PASSWORD\" --admin_email=\"$WPSITE_ADMIN_EMAIL\" --skip-email && wp core version && wp theme activate $WPSITE_THEME_NAME'",
+    "dev": "webpack --watch",
+    "build": "webpack --env.production",
+    "serve": "npm run start && npm run dev",
+    "ssh": "docker-compose exec -u www-data wordpress bash",
+    "ssh:root": "docker-compose exec wordpress bash",
+    "postinstall": "cp .env.sample .env && echo '### Edit your .ENV file then run `npm run setup`' to continue..."
   },
   "engines": {
-    "node": ">= 6.9.4"
+    "node": ">= 4.5"
   },
   "devDependencies": {
-    "autoprefixer": "~8.2.0",
-    "browser-sync": "~2.23.6",
-    "browsersync-webpack-plugin": "^0.6.0",
-    "bs-html-injector": "~3.0",
-    "buble-loader": "^0.4.1",
-    "cache-loader": "~1.2.0",
-    "clean-webpack-plugin": "^0.1.18",
-    "copy-globs-webpack-plugin": "^0.2.0",
-    "css-loader": "^0.28.9",
-    "cssnano": "~v4.0.0-rc.2",
-    "eslint": "~4.19.1",
-    "eslint-loader": "~1.9",
-    "eslint-plugin-import": "~2.11.0",
-    "extract-text-webpack-plugin": "~3.0.2",
-    "file-loader": "^1.1.6",
-    "friendly-errors-webpack-plugin": "^1.6.1",
-    "imagemin-mozjpeg": "~7.0.0",
-    "imagemin-webpack-plugin": "~2.1.1",
-    "import-glob": "~1.5",
-    "node-sass": "~4.8.3",
-    "postcss-loader": "~2.1.0",
-    "postcss-safe-parser": "~3.0",
-    "resolve-url-loader": "~2.3.0",
-    "rimraf": "~2.6",
-    "sass-loader": "~6.0",
-    "style-loader": "^0.20.1",
-    "stylelint": "^8.4.0",
-    "stylelint-config-standard": "~18.2.0",
-    "stylelint-webpack-plugin": "^0.10.1",
+    "asset-builder": "^1.1.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "browser-sync": "^2.18.13",
+    "browser-sync-dev-hot-webpack-plugin": "^0.2.2",
+    "caniuse-lite": "^1.0.30000697",
+    "clean-webpack-plugin": "^0.1.17",
+    "css-loader": "^0.28.7",
+    "dotenv": "^5.0.1",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.5",
+    "imagemin-webpack-plugin": "^1.5.2",
+    "node-sass": "^4.5.3",
+    "postcss-cssnext": "^3.0.2",
+    "postcss-import": "^11.0.0",
+    "postcss-load-config": "^1.2.0",
+    "postcss-loader": "^2.0.8",
+    "postcss-safe-parser": "^3.0.1",
+    "sass-loader": "^6.0.6",
+    "script-loader": "^0.7.2",
+    "style-loader": "^0.19.0",
     "url-loader": "^0.6.2",
-    "webpack": "~3.10.0",
+    "webpack": "^3.8.1",
     "webpack-assets-manifest": "^1.0.0",
-    "webpack-dev-middleware": "~2.0.4",
-    "webpack-hot-middleware": "~2.22.0",
-    "webpack-merge": "~4.1.1",
-    "yargs": "~11.0.0"
+    "webpack-dev-middleware": "^2.0.0",
+    "webpack-hot-middleware": "^2.0.0"
   },
   "dependencies": {
-    "bootstrap": "v4.1.1",
-    "jquery": "^3.3.1",
-    "popper.js": "^1.14.3"
+    "bootstrap": "^4.0.0",
+    "popper.js": "^1.12.6"
   }
 }
