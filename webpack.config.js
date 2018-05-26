@@ -12,6 +12,7 @@ const WebpackAssetsManifest = require('webpack-assets-manifest')
 require('dotenv').config()
 
 const BROWSER_SYNC_OPTIONS = {
+  https: false,
   host: 'localhost',
   port: 3000,
   proxy: [ 'http://', process.env.WPSITE_URL, process.env.WPSITE_PORT ? ':' + process.env.WPSITE_PORT : '' ].join(''),
@@ -53,7 +54,8 @@ module.exports = (env = {}) => {
     externals: {
       jquery: 'jQuery',
     },
-    devtool: isProduction ? "source-map" : "cheap-eval-source-map",
+    // devtool: isProduction ? "source-map" : "cheap-eval-source-map",
+    devtool: isProduction ? "nosources-source-map" : "eval",
     module: {
       rules: [{
         test: /\.scss$/,
@@ -61,18 +63,18 @@ module.exports = (env = {}) => {
         use: ExtractTextPlugin.extract({
           use: [{
             loader: "css-loader", options: {
-              sourceMap: isDevelopment
+              sourceMap: true
             }
           }, {
             loader: "postcss-loader", options: {
-              sourceMap: isDevelopment,
+              sourceMap: true,
               config: {
                 path: 'configs/webpack/postcss.config.js'
               }
             }
           }, {
             loader: "sass-loader", options: {
-              sourceMap: isDevelopment
+              sourceMap: true
             }
           }],
           // use style-loader in development
@@ -140,6 +142,11 @@ module.exports = (env = {}) => {
       new ImageminPlugin({
          test: '/\.(jpe?g|png|gif|svg)$/i',
          disable: isDevelopment
+      }),
+      isProduction && new webpack.optimize.UglifyJsPlugin({
+        minimize: true,
+        sourceMap: true,
+        output: { comments: false }
       }),
       new ExtractTextPlugin({
         filename: isProduction ? "styles/[name]-[contenthash].css" : "styles/[name].css",

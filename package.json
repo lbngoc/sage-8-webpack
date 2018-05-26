@@ -18,8 +18,8 @@
     }
   ],
   "scripts": {
-    "start": "docker-compose up -d",
-    "setup": "npm run start && sleep 3 && docker-compose exec -u www-data wordpress sh -c 'wp core install --title=\"$WPSITE_TITLE\" --url=$WPSITE_URL --admin_user=\"$WPSITE_ADMIN_USER\" --admin_password=\"$WPSITE_ADMIN_PASSWORD\" --admin_email=\"$WPSITE_ADMIN_EMAIL\" --skip-email && wp core version && wp theme activate $WPSITE_THEME_NAME'",
+    "start": "docker-compose up -d && docker-compose ps",
+    "setup": "npm run start && docker-compose exec wordpress sh -c 'echo \"Installing Wordpress...\" && sleep 10 && chown 1000:1000 -R . && wp core install --title=\"$WPSITE_TITLE\" --url=$WPSITE_URL --admin_user=\"$WPSITE_ADMIN_USER\" --admin_password=\"$WPSITE_ADMIN_PASSWORD\" --admin_email=\"$WPSITE_ADMIN_EMAIL\" --skip-email --allow-root && wp core version --allow-root && wp user create $WPSITE_EDITOR_USER $WPSITE_EDITOR_EMAIL --user_pass=\"$WPSITE_EDITOR_PASSWORD\" --role=editor --allow-root && wp option update blogdescription \"$WPSITE_DESC\" --allow-root && wp theme activate $WPSITE_THEME_NAME --allow-root'",
     "dev": "webpack --watch",
     "build": "webpack --env.production",
     "serve": "npm run start && npm run dev",

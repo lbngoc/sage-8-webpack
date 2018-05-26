@@ -1,38 +1,32 @@
-version: '3'
+version: "3"
 services:
-  db:
-    image: mysql:5.6
-    volumes:
-      - "./.data/db:/var/lib/mysql"
-    # restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: wordpress
-      MYSQL_DATABASE: ${DB_HOST:-wordpress}
-      MYSQL_USER: ${DB_USERNAME:-wordpress}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-wordpress}
 
   wordpress:
-    image: wordpress:php7.1
-    depends_on:
-      - db
+    restart: always
+    image: ${WP:-wordpress:php7.1}
     volumes:
-      # - "./data/logs:/var/log/wordpress"
-      # - "./configs/server.conf:/etc/apache2/sites-available/000-default.conf"
+      # - "./configs/site.conf:/etc/apache2/sites-available/000-default.conf"
       - "./configs/php.ini:/usr/local/etc/php/conf.d/php.custom.ini:ro"
+      - "./.data/logs:/var/log/wordpress"
       - "/usr/local/bin/wp:/usr/local/bin/wp"
-      - "./www/.htaccess:/var/www/html/.htaccess:ro"
+      - "./www:/var/www/html"
       - "./src:/var/www/html/wp-content/themes/${WPSITE_THEME_NAME:-sage8}"
-    links:
-      - db
-    extra_hosts:
-      - "${WPSITE_URL:-sage8.test}:172.18.0.1"
-    ports:
-      - "${WPSITE_PORT:-80}:80"
-    # restart: always
+    labels:
+      - "traefik.backend=wordpress"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:${WPSITE_URL:-sage8.localhost}"
+      - "traefik.frontend.entryPoints=http"
     working_dir: /var/www/html
     env_file:
       - ".env"
     environment:
       APACHE_LOG_DIR: /var/log/wordpress
-      WORDPRESS_DB_HOST: ${DB_HOST:-db}
-      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-wordpress}
+      WORDPRESS_DB_HOST: ${DB_HOST:-mysql}
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: ${DB_ROOT_PASSWORD:-root_password}
+      WORDPRESS_DB_NAME: ${DB_NAME:-wordpress}
+
+networks:
+  default:
+    external:
+      name: traefik_reverse_proxy

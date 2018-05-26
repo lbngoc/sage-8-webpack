@@ -8,7 +8,9 @@ npm-debug.log
 yarn-error.log
 
 # Local settings and data
-/.data
+/.data/*
+!/.data/.gitkeep
+
 /.env
 /wp-cli.local.yml
 /docker-compose.override.yml
