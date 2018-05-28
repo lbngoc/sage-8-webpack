@@ -12,6 +12,7 @@ wp-content/wp-cache-config.php
 wp-content/index.php
 
 wp-content/plugins/*
+wp-content/themes/twenty*
 
 # /.htaccess
 /wp-*.php

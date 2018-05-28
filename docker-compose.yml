@@ -9,10 +9,10 @@ services:
       - "./configs/php.ini:/usr/local/etc/php/conf.d/php.custom.ini:ro"
       - "./.data/logs:/var/log/wordpress"
       - "/usr/local/bin/wp:/usr/local/bin/wp"
-      - "./www:/var/www/html"
       - "./src:/var/www/html/wp-content/themes/${WPSITE_THEME_NAME:-sage8}"
+      - "./www:/var/www/html"
     labels:
-      - "traefik.backend=wordpress"
+      - "traefik.backend=${WPSITE_URL:-sage8.localhost}"
       - "traefik.port=80"
       - "traefik.frontend.rule=Host:${WPSITE_URL:-sage8.localhost}"
       - "traefik.frontend.entryPoints=http"
