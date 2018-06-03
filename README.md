@@ -68,7 +68,9 @@ networks:
     driver: bridge
 ```
 
-Skip below section and continue at #3.2
+Skip below section and continue at **[3.2 Development](#32-development)**
+
+Demo: [https://www.youtube.com/watch?v=X26GtB1r5NU](https://www.youtube.com/watch?v=X26GtB1r5NU)
 
 #### 3.1.2 For multiple projects (use sample network and database server)
 
@@ -175,7 +177,7 @@ npm run setup
 **Development**
 
 ```
-npm run serve
+npm run dev
 ```
 
 **Build**
