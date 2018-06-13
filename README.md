@@ -33,7 +33,7 @@ npm install -g create-project
 Create new project
 
 ```
-create-project your-project-name lbngoc/sage-8-webpack#hmr
+create-project your-project-name lbngoc/sage-8-webpack#dep
 cd your-project-name
 npm install
 ```
@@ -189,7 +189,7 @@ npm run build
 
 ### 3.3 Deployment
 
-Edit your host details inside `deploy_hosts.yml`
+Edit your host details inside `hosts.yml`
 
 For deploy a new release to your host
 
