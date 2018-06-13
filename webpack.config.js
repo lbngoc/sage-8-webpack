@@ -1,16 +1,17 @@
 //webpack.config.js
 
-const webpack               = require('webpack')
+const webpack               = require('webpack');
 
-const BrowserSyncHotPlugin  = require('browser-sync-dev-hot-webpack-plugin')
-const CleanWebpackPlugin    = require('clean-webpack-plugin')
-const ExtractTextPlugin     = require('extract-text-webpack-plugin')
-const ImageminPlugin        = require('imagemin-webpack-plugin').default
-const path                  = require('path')
-const WebpackAssetsManifest = require('webpack-assets-manifest')
+const BrowserSyncHotPlugin  = require('browser-sync-dev-hot-webpack-plugin');
+const CleanWebpackPlugin    = require('clean-webpack-plugin');
+const ExtractTextPlugin     = require('extract-text-webpack-plugin');
+const ImageminPlugin        = require('imagemin-webpack-plugin').default;
+const path                  = require('path');
+const exec                  = require('child_process').exec;
+const WebpackAssetsManifest = require('webpack-assets-manifest');
+require('dotenv').config();
 
-require('dotenv').config()
-
+/******************************************************************************/
 const BROWSER_SYNC_OPTIONS = {
   https: false,
   host: 'localhost',
@@ -151,9 +152,9 @@ module.exports = (env = {}) => {
       new ExtractTextPlugin({
         filename: isProduction ? "styles/[name]-[contenthash].css" : "styles/[name].css",
         disable: isDevelopment
-      }),
+      })
     ].filter(Boolean)
-  }
+  };
 
   // hmr
   if (isDevelopment) {
@@ -162,5 +163,5 @@ module.exports = (env = {}) => {
     config.plugins.push(new webpack.HotModuleReplacementPlugin());
   }
 
-  return config
+  return config;
 }

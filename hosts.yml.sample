@@ -1,0 +1,16 @@
+dev:
+  hostname: example.com
+  user: ssh_user
+  port: 22
+  identityFile: ~/.ssh/id_rsa
+  forwardAgent: true
+  multiplexing: true
+  sshOptions:
+    UserKnownHostsFile: /dev/null
+    StrictHostKeyChecking: no
+  http_user: ssh_user
+  writable_mode: chown
+  deploy_path: ~/
+  wp_path: "{{deploy_path}}/public_html"
+  bin/wp: ~/bin/wp
+  public_url: http://example.com

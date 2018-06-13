@@ -20,6 +20,7 @@ Maintained by              | || |
 - [NPM](https://www.npmjs.com/) or [Yarn](https://yarnpkg.com/lang/en/)
 - [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/install/)
 - [WP-CLI](https://wp-cli.org)
+- [Deployer](https://deployer.org)
 
 ## 2. Installation
 
@@ -50,12 +51,12 @@ version: "3"
 services:
   mysql:
     restart: always
-    image: ${DB:-mysql}
+    image: ${DB}
     volumes:
       - "./.data/db:/var/lib/mysql"
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_password}
-      MYSQL_DATABASE: ${DB_NAME:-wordpress}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
 
   wordpress:
     depends_on:
@@ -184,6 +185,40 @@ npm run dev
 
 ```
 npm run build
+```
+
+### 3.3 Deployment
+
+Edit your host details inside `deploy_hosts.yml`
+
+For deploy a new release to your host
+
+```
+dep deploy
+```
+
+If you only need update wp-content folder
+
+```
+dep deploy:update_code
+
+```
+
+Some useful deploy tasks to synchronize between local and host
+
+```
+ pull
+  pull:db             Download database from host and import to local
+  pull:media          Download media files from host
+  pull:plugins        Download plugins from host
+  pull:theme          Download only activate theme from host
+  pull:themes         Download themes from host
+ push
+  push:db             Upload and import local database to host
+  push:media          Upload media files to host
+  push:plugins        Upload plugins to host
+  push:theme          Upload only activate theme to host
+  push:themes         Upload themes to host
 ```
 
 ## 4. References

@@ -12,5 +12,7 @@ yarn-error.log
 !/.data/.gitkeep
 
 /.env
+/hosts.yml
 /wp-cli.local.yml
 /docker-compose.override.yml
+/*.bak

@@ -3,29 +3,25 @@ services:
 
   wordpress:
     restart: always
-    image: ${WP:-wordpress:php7.1}
+    image: ${WP}
     volumes:
-      # - "./configs/site.conf:/etc/apache2/sites-available/000-default.conf"
       - "./configs/php.ini:/usr/local/etc/php/conf.d/php.custom.ini:ro"
-      - "./.data/logs:/var/log/wordpress"
       - "/usr/local/bin/wp:/usr/local/bin/wp"
-      # - "./src:/var/www/html/wp-content/themes/${WPSITE_THEME_NAME:-sage8}"
-      - "./www:/var/www/html"
       - "./src:/var/www/src"
+      - "./www:/var/www/html"
     labels:
-      - "traefik.backend=${WPSITE_URL:-sage8.localhost}"
+      - "traefik.backend=${WPSITE_URL}"
       - "traefik.port=80"
-      - "traefik.frontend.rule=Host:${WPSITE_URL:-sage8.localhost}"
+      - "traefik.frontend.rule=Host:${WPSITE_URL}"
       - "traefik.frontend.entryPoints=http"
-    working_dir: /var/www/html
     env_file:
       - ".env"
     environment:
       APACHE_LOG_DIR: /var/log/wordpress
-      WORDPRESS_DB_HOST: ${DB_HOST:-mysql}
+      WORDPRESS_DB_HOST: ${DB_HOST}
       WORDPRESS_DB_USER: root
-      WORDPRESS_DB_PASSWORD: ${DB_ROOT_PASSWORD:-root_password}
-      WORDPRESS_DB_NAME: ${DB_NAME:-wordpress}
+      WORDPRESS_DB_PASSWORD: ${DB_ROOT_PASSWORD}
+      WORDPRESS_DB_NAME: ${DB_NAME}
 
 networks:
   default:

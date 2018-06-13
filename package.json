@@ -19,16 +19,16 @@
   ],
   "scripts": {
     "start": "docker-compose up -d && docker-compose ps",
-    "setup": "npm run start -s && docker-compose exec -u 1000 wordpress sh -c '{ [ ! -z $WPSITE_PORT ] && WPSITE_URL=\"$WPSITE_URL:$WPSITE_PORT\"; }; echo \"\nCreating database...\" && sleep 11 && echo \"Installing WordPress version $(wp core version)\" && sleep 3 && wp core install --title=\"$WPSITE_TITLE\" --url=$WPSITE_URL --admin_user=\"$WPSITE_ADMIN_USER\" --admin_password=\"$WPSITE_ADMIN_PASSWORD\" --admin_email=\"$WPSITE_ADMIN_EMAIL\" --skip-email && echo \"Creating editor user...\" && { [ 1 -eq $(wp user list --field=ID | wc -l) ] && wp user create $WPSITE_EDITOR_USER $WPSITE_EDITOR_EMAIL --user_pass=\"$WPSITE_EDITOR_PASSWORD\" --role=editor; }; sleep 0.1' && npm run update:perms -s && npm run activate:theme -s",
+    "setup": "npm run start -s && docker-compose exec -u 1000 wordpress sh -c '{ [ ! -z $WPSITE_PORT ] && WPSITE_URL=\"$WPSITE_URL:$WPSITE_PORT\"; }; echo \"\nCreating database...\" && sleep 11 && echo \"Installing WordPress version $(wp core version)\" && sleep 3 && wp core install --title=\"$WPSITE_TITLE\" --url=$WPSITE_URL --admin_user=\"$WPSITE_ADMIN_USER\" --admin_password=\"$WPSITE_ADMIN_PASSWORD\" --admin_email=\"$WPSITE_ADMIN_EMAIL\" --skip-email && echo \"Creating editor user...\" && { [ 1 -eq $(wp user list --field=ID | wc -l) ] && wp user create $WPSITE_EDITOR_USER $WPSITE_EDITOR_EMAIL --user_pass=\"$WPSITE_EDITOR_PASSWORD\" --role=editor; }; echo \"wp-content/themes/$WPSITE_THEME_NAME\" >> .gitignore ' && npm run update:perms -s && npm run activate:theme -s",
     "update:perms": "docker-compose exec wordpress sh -c 'chown 1000 -R . && find . -type d -exec chmod 0775 {} \\; && find . -type f -exec chmod 0664 {} \\; && find . -type d -name uploads -exec chmod 0777 {} \\;'",
-    "activate:theme": "docker-compose exec -u 1000 wordpress sh -c 'ln -fs ../../../src ./wp-content/themes/$WPSITE_THEME_NAME && wp theme activate $WPSITE_THEME_NAME'",
-    "update:settings": "docker-compose exec -u 1000 wordpress sh -c 'wp option set home $WPSITE_URL; wp option set siteurl $WPSITE_URL; ln -fs ../../../src ./wp-content/themes/$WPSITE_THEME_NAME; wp theme activate $WPSITE_THEME_NAME'",
+    "activate:theme": "docker-compose exec -u 1000:1000 wordpress sh -c 'ln -sfrn ../src ./wp-content/themes/$WPSITE_THEME_NAME && wp theme activate $WPSITE_THEME_NAME'",
+    "update:settings": "docker-compose exec -u 1000:1000 wordpress sh -c 'wp option set home $WPSITE_URL; wp option set siteurl $WPSITE_URL; ln -sfrn ../src ./wp-content/themes/$WPSITE_THEME_NAME; wp theme activate $WPSITE_THEME_NAME'",
     "dev": "webpack --watch",
     "build": "webpack --env.production",
     "serve": "docker-compose up -d && npm run dev",
     "ssh": "docker-compose exec -u www-data wordpress bash",
     "ssh:root": "docker-compose exec wordpress bash",
-    "postinstall": "cp .env.sample .env && echo '### Edit your .ENV file then run `npm run setup`' to continue..."
+    "postinstall": "mv .env.sample .env; mv hosts.yml.sample hosts.yml; echo '### Edit your .ENV file then run `npm run setup`' to continue..."
   },
   "engines": {
     "node": ">= 4.5"
