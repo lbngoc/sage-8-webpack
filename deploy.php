@@ -100,7 +100,7 @@ task('push:db', function() {
   $db_file = explode("'", $db_file);
   $db_file = $db_file[1];
   upload($db_file, "{{release_path}}");
-  run("cd {{wp_path}} && {{bin/wp}} db import {{release_path}}/$db_file && {{bin/wp}} search-replace --all-tables $local_url {{public_url}}");
+  run("cd {{wp_path}} && {{bin/wp}} db import {{release_path}}/$db_file && {{bin/wp}} search-replace --all-tables $local_url {{public_url}} && rm {{release_path}}/$db_file");
   runLocally("rm $db_file");
 });
 
@@ -112,8 +112,10 @@ task('pull:db', function() {
   $db_file = explode("'", $db_file);
   $db_file = $db_file[1];
   download("{{wp_path}}/$db_file", "{{docroot_path}}");
-  $public_url = run("wp db import $db_file && wp get option siteurl");
-  runLocally("wp search-replace --all-tables $public_url $local_url && rm $db_file");
+  run("rm {{wp_path}}/$db_file");
+  runLocally("wp db import {{docroot_path}}/$db_file && rm {{docroot_path}}/$db_file");
+  $public_url = runLocally("wp option get siteurl");
+  runLocally("wp search-replace --all-tables $public_url $local_url");
 });
 
 // Additional tasks
