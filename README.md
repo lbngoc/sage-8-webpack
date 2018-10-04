@@ -38,11 +38,16 @@ cd your-project-name
 npm install
 ```
 
-## 3. Usage
+## 3. Demo
 
-### 3.1 Setup dev enviroment
+- [Setup a stand-alone project](https://www.youtube.com/watch?v=X26GtB1r5NU)
+- [Deploy a local website to host with Deployer](https://www.youtube.com/watch?v=ZGIneBTr_l8)
 
-#### 3.1.1 For stand-alone project
+## 4. Usage
+
+### 4.1 Setup dev enviroment
+
+#### 4.1.1 For stand-alone project
 
 Create new `docker-compose.override.yml`
 
@@ -69,11 +74,9 @@ networks:
     driver: bridge
 ```
 
-Skip below section and continue at **[3.2 Development](#32-development)**
+Skip below section and continue at **[4.2 Development](#32-development)**
 
-Demo: [https://www.youtube.com/watch?v=X26GtB1r5NU](https://www.youtube.com/watch?v=X26GtB1r5NU)
-
-#### 3.1.2 For multiple projects (use sample network and database server)
+#### 4.1.2 For multiple projects (use sample network and database server)
 
 ***Skip this step if you was already setup it***
 
@@ -165,7 +168,7 @@ Edit `/etc/hosts` and add below code:
 
 You can setup all domain with TLD `.local` to locahost with [dnsmaq](http://www.thekelleys.org.uk/dnsmasq/doc.html)
 
-### 3.2 Development
+### 4.2 Development
 
 **Setup Wordpress site**
 
@@ -187,7 +190,7 @@ npm run dev
 npm run build
 ```
 
-### 3.3 Deployment
+### 4.3 Deployment
 
 Edit your host details inside `hosts.yml`
 
