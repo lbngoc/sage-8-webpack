@@ -49,7 +49,7 @@ task('wp:check', function() {
   }
   $wp_summ = run('cd {{wp_path}}; VER=$({{bin/wp}} core version); URL=$({{bin/wp}} option get siteurl); echo $VER,$URL');
   list($wp_ver, $wp_siteurl) = explode(',', $wp_summ);
-  writeln("<info>Current hostname is \"{{hostname}}\",\n public path is \"{{wp_path}}\"\n has installed Wordpress version {$wp_ver}\n and published at {$wp_siteurl}</info>");
+  writeln("<comment>Current hostname is \"{{hostname}}\",\n public path is \"{{wp_path}}\"\n has installed Wordpress version {$wp_ver}\n and published at {$wp_siteurl}</comment>");
   if (!askConfirmation('Are you sure you want to deploy (and OVERRIDE) your Wordpress website to this location?')) {
     exit;
   }
@@ -153,7 +153,7 @@ task('deploy:symlink_wp', function() {
     run("cd {{wp_path}}; mv wp-content wp-content.bak; {{bin/wp}} db export wp-content.bak/wpdb_snapshot.backp.sql");
   }
   run("cd {{wp_path}}; {{bin/symlink}} {{deploy_path}}/current wp-content");
-  writeln("<warning>We do not deploy your locally \"wp-config.php\" to host.\nSo that, if you have any custom configs, please do it manually by yourself.</warning>");
+  writeln("<comment>We do not deploy your locally \"wp-config.php\" to host.\nSo that, if you have any custom configs, please do it manually by yourself.</comment>");
 });
 
 // Archive current project

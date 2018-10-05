@@ -40,8 +40,8 @@ npm install
 
 ## 3. Demo
 
-- [Setup a stand-alone project](https://www.youtube.com/watch?v=X26GtB1r5NU)
-- [Deploy a local website to host with Deployer](https://www.youtube.com/watch?v=ZGIneBTr_l8)
+- [Setup a stand-alone project](https://youtu.be/X26GtB1r5NU)
+- [Deploy a local website to host with Deployer](https://youtu.be/HNai59M4DsQ)
 
 ## 4. Usage
 
@@ -224,7 +224,7 @@ Some useful deploy tasks to synchronize between local and host
   push:themes         Upload themes to host
 ```
 
-## 4. References
+## 5. References
 
 - [Sage](https://github.com/roots/sage)
 - [sage-8-webpack](https://github.com/drdogbot7/sage-8-webpack)
